@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>DUCK HUNT</title>
+	<link rel="stylesheet" href="assets/styles/reset.css">
+	<link rel="stylesheet" href="assets/styles/style.css">
+
+	<style>
+		.duck {
+			left: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrapper">
+
+		<div class="welcome">
+			<span class="welcome-text">Click to start</span>
+		</div>
+
+		<div class="main none-active">
+			<div class="foot"></div>
+
+			<div class="dog"></div>
+
+			<div class="duck duck-left"></div>
+			<div class="duck duck-top"></div>
+			<div class="duck duck-right"></div>
+			<div class="duck duck-top-right"></div>
+		</div>
+
+	</div>
+
+	<script>
+		function game() {
+			var welcomeContainer = document.querySelector('.welcome');
+			var welcomeText = document.querySelector('.welcome-text');
+			var mainContainer = document.querySelector('.main');
+			var dog = document.querySelector('.dog');
+			var ducks = document.querySelectorAll('.duck');
+			var duckLeft = document.querySelector('.duck-left');
+			var duckTop = document.querySelector('.duck-top');
+			var duckRight = document.querySelector('.duck-right');
+			var duckTopRight = document.querySelector('.duck-top-right');
+			var wrapper = document.querySelector('.wrapper');
+			var countDuck = 0;
+
+			wrapper.addEventListener('click', function(ev) {
+				var ducksArray = [...ev.target.classList];
+				if (ducksArray.indexOf('duck') !== -1) {
+					ev.target.classList.remove('duck_fly');
+					ev.target.classList.add('none-active');
+					nextLevel();
+				};
+			});
+
+
+			welcomeText.addEventListener('click', function (ev) {
+				countDuck = 0;
+				mainContainer.classList.remove('none-active');
+				welcomeContainer.classList.add('none-active');
+
+				var timerId = setInterval(function () {					
+					dog.classList.add('gs');
+					dog.classList.add('dog_walk');
+				}, 1000);
+
+				setTimeout( function() {
+					clearInterval(timerId);
+					dog.classList.remove('dog_walk');
+					dog.classList.add('dog_jump')
+				}, 5000);
+			
+				setTimeout( function() {
+					var ducksArr = [...ducks];
+					ducksArr.forEach(function (duck){
+						dog.classList.remove('dog_jump')
+						duck.classList.add('gs');
+						duck.classList.add('duck_fly');
+					});
+
+					duckLeft.classList.add('duck_fly_left');
+					duckTop.classList.add('duck_fly_top_left');
+					duckRight.classList.add('duck_fly_right');
+					duckTopRight.classList.add('duck_fly_top_right');
+				}, 7000);
+			});
+		
+			function nextLevel() {
+				if(countDuck === 3) {
+					welcomeContainer.classList.remove('none-active');
+					mainContainer.classList.add('none-active');
+				} else {
+					countDuck += 1;
+				};
+			};
+
+		};
+
+		document.addEventListener("DOMContentLoaded", game);
+	</script>
+</body>
+</html>
